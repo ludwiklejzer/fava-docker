@@ -1,8 +1,14 @@
 FROM python:3.11-slim-bookworm AS builder
 
+ARG FAVA_VERSION=
 WORKDIR /tmp
 COPY requirements.txt .
-RUN pip install --no-cache-dir --root-user-action ignore --prefix="/install" fava -r requirements.txt
+RUN pip install \
+	--no-cache-dir \
+	--root-user-action ignore \
+	--prefix=/install \
+	"fava${FAVA_VERSION:+==${FAVA_VERSION}}" \
+	-r requirements.txt
 
 FROM gcr.io/distroless/python3-debian12
 
